@@ -34,11 +34,11 @@ public class Route {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
+    @JoinColumn(name = "origin_region_id")
     private Region originRegion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
+    @JoinColumn(name = "destination_region_id")
     private Region destination;
 
     private String password;
