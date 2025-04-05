@@ -25,12 +25,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "route_history_tb")
+@Table(name = "route_history")
 @EntityListeners(AuditingEntityListener.class) // 엔티티 리스너 추가
 public class RouteHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -55,7 +55,7 @@ public class RouteHistory {
     private LocalDateTime updatedAt;
 
     @Builder
-    public RouteHistory(Integer id, User user, Route route, int time_taken, int distance, LocalDateTime requestedAt,
+    public RouteHistory(Long id, User user, Route route, int time_taken, int distance, LocalDateTime requestedAt,
             LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.user = user;

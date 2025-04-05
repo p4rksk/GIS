@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class Scrap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -49,7 +49,7 @@ public class Scrap {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Scrap(Integer id, User user, Route route, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Scrap(Long id, User user, Route route, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.user = user;
         this.route = route;

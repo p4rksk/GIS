@@ -1,12 +1,16 @@
-package gis.Route;
+package gis.Payment;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import gis.Region.Region;
+import gis.Card.Card;
+import gis.Route.Route;
+import gis.Taxi.Taxi;
+import gis.User.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -26,20 +30,36 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "route")
+@Table(name = "payment")
 @EntityListeners(AuditingEntityListener.class) // 엔티티 리스너 추가
-public class Route {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "origin_region_id")
-    private Region originRegion;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "destination_region_id")
-    private Region destination;
+    @JoinColumn(name = "card_id")
+    private Card card;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id")
+    private Route route;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "taxi_id")
+    private Taxi taxi;
+
+    private String merchantUid;
+    private Integer amount;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private LocalDateTime paidAt;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -49,12 +69,22 @@ public class Route {
     @Column(nullable = true)
     private LocalDateTime updatedAt;
 
-    @Builder
-    public Route(Long id, Region originRegion, Region destination, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.originRegion = originRegion;
-        this.destination = destination;
+    public enum PaymentStatus {
+        SUCCESS, FAIL, PENDING
+    }
 
+    @Builder
+    public Payment(Long id, User user, Card card, Route route, Taxi taxi, String merchantUid, Integer amount,
+            PaymentStatus paymentStatus, LocalDateTime paidAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.user = user;
+        this.card = card;
+        this.route = route;
+        this.taxi = taxi;
+        this.merchantUid = merchantUid;
+        this.amount = amount;
+        this.paymentStatus = paymentStatus;
+        this.paidAt = paidAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
